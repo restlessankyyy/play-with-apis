@@ -115,12 +115,15 @@ To view the pod created by the deployment, run:
 kubectl get pods
 
 (Output)
+<br/>
 
-NAME                         READY     STATUS    RESTARTS   AGE
+NAME                         READY     STATUS    RESTARTS   AGE 
+<br/>
 catch-n-replace-714049816-ztzrb   1/1       Running   0          6m
 
 
 
+<br/>
 Now is a good time to go through some interesting kubectl commands. None of these will change the state of the cluster, full documentation is available here: https://cloud.google.com/container-engine/docs/kubectl/
 
 kubectl cluster-info
@@ -146,6 +149,7 @@ kubectl expose deployment catch-n-replace --type="LoadBalancer" --port=3211
 (Output)
 
 service/catch-n-replace exposed
+
 The flag used in this command specifies that are using the load-balancer provided by the underlying infrastructure (in this case the Compute Engine load balancer). Note that you expose the deployment, and not the pod, directly. This will cause the resulting service to load balance traffic across all pods managed by the deployment (in this case only 1 pod, but you will add more replicas later).
 
 The Kubernetes master creates the load balancer and related Compute Engine forwarding rules, target pools, and firewall rules to make the service fully accessible from outside of Google Cloud.
@@ -155,15 +159,19 @@ To find the publicly-accessible IP address of the service, request kubectl to li
 kubectl get services
 
 This is the output you should see:
+<br/>
 
 NAME         CLUSTER-IP     EXTERNAL-IP      PORT(S)    AGE
+<br/>
 catch-n-replace   10.3.250.149   104.154.90.147   3211/TCP   1m
+<br/>
 kubernetes   10.3.240.1     <none>           443/TCP    5m
 There are 2 IP addresses listed for your catch-n-replace service, both serving port 3211. The CLUSTER-IP is the internal IP that is only visible inside your cloud virtual network; the EXTERNAL-IP is the external load-balanced IP.
 
 Note: The EXTERNAL-IP may take several minutes to become available and visible. If the EXTERNAL-IP is missing, wait a few minutes and run the command again.
 
 You should now be able to reach the service by pointing your browser to this address: http://<EXTERNAL_IP>:3211
+<br/>
 
 At this point you've gained several features from moving to containers and Kubernetes - you do not need to specify on which host to run your workload and you also benefit from service monitoring and restart. Now see what else can be gained from your new Kubernetes infrastructure.
 
@@ -182,23 +190,25 @@ kubectl get deployment
 
 (Output)
 
-NAME         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-catch-n-replace   4         4         4            4           16m
+<br/>
+NAME         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE <br/>
+catch-n-replace   4         4         4            4           16m <br/>
 You may need to run the above command until you see all 4 replicas created. You can also list the all pods:
 
 kubectl get pods
 
 This is the output you should see:
+<br/>
 
-NAME                         READY     STATUS    RESTARTS   AGE
-catch-n-replace-714049816-g4azy   1/1       Running   0          1m
-catch-n-replace-714049816-rk0u6   1/1       Running   0          1m
-catch-n-replace-714049816-sh812   1/1       Running   0          1m
-catch-n-replace-714049816-ztzrb   1/1       Running   0          16m
+NAME                         READY     STATUS    RESTARTS   AGE <br/>
+catch-n-replace-714049816-g4azy   1/1       Running   0          1m <br/>
+catch-n-replace-714049816-rk0u6   1/1       Running   0          1m <br/>
+catch-n-replace-714049816-sh812   1/1       Running   0          1m <br/>
+catch-n-replace-714049816-ztzrb   1/1       Running   0          16m <br/>
 A declarative approach is being used here. Rather than starting or stopping new instances, you declare how many instances should be running at all times. Kubernetes reconciliation loops makes sure that reality matches what you requested and takes action if needed.
+ <br/>
 
-
-### Hurray You have successfully deployed your application on GKE and is accessible at http://34.69.244.71:3211/ from anywhere
+### Hurray! 🎉  You have successfully deployed your application on GKE and is accessible at http://34.69.244.71:3211/ from anywhere 🌍. 
 
 
 
